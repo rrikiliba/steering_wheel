@@ -1,9 +1,10 @@
 QT += quick serialbus
 
 SOURCES += \
-        main.cpp
+        BackEnd/main.cpp
 
 HEADERS += \
-        data.hpp
+        BackEnd/backend.hpp \
+        BackEnd/data.hpp
 
-RESOURCES += qml.qrc
+RESOURCES += FrontEnd/qml.qrc
