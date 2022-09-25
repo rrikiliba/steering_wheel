@@ -2,6 +2,21 @@
 project by: Riccardo Libanora
 https://github.com/rrikiliba
 
+
+## Version 0.2: Top UI
+
+- Simulated analog dials for speed and rpm
+  - Numeric value still shown
+
+- Limiter percentage displayer
+  - Border color changing for quick reference of value
+
+- Devided data-read signals according to source sensor
+  - Rather than one signal being sent to every single component
+
+- Some code cleanup
+
+
 ## Version 0.1: Groundworks
 
 - Basic UI layout

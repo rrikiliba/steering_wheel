@@ -3,24 +3,19 @@ import QtQuick.Window 2.15
 
 Rectangle {
 
-    property string borderColor: "white"
-    property string insideColor: parent.color
+    property string borderColor: "red"
     property int borderThickness: 2
     property int borderSpacing: 1
     property bool rounded: false
+    property int borderRadius: 5
 
-    id: base
-    width: parent.width-borderSpacing
-    height: parent.height-borderSpacing
+    color: "transparent"
+    border.color: borderColor
+
+    border.width: borderThickness
+    radius: rounded ? borderRadius : 0
+
+    width: parent.width -borderSpacing
+    height: parent.height -borderSpacing
     anchors.centerIn: parent
-    color:  borderColor
-    radius: rounded ? 5 : 0
-
-    Rectangle {
-        width: base.width-borderThickness
-        height: base.height-borderThickness
-        anchors.centerIn: base
-        color: insideColor
-        radius: base.rounded ? 5 : 0
-    }
 }
