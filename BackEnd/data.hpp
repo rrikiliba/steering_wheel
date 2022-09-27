@@ -28,7 +28,7 @@ public:
   Data(QObject *parent = nullptr) : QObject(parent) {
     // get a QTimer object to set off every second and start it immediatly
     _clock = new QTimer();
-    _clock->setInterval(1000);
+    _clock->setInterval(500);
     _clock->start();
     // bind the signal of timeout from the timer to the generateData() function
     connect(_clock, &QTimer::timeout, this, &Data::generateData);

@@ -7,7 +7,7 @@ Rectangle {
     property int borderThickness: 2
     property int borderSpacing: 1
     property bool rounded: false
-    property int borderRadius: 5
+    property int borderRadius: 6
 
     color: "transparent"
     border.color: borderColor

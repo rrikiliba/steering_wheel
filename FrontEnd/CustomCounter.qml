@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 
 Dial {
     id: control
+    width: parent.width *0.25; height: width
     property string dialText: "0"
 
     background: Image {
@@ -19,10 +20,12 @@ Dial {
     }
 
     Text {
-        color: "white"
         text: dialText
-        font.bold: true
-        font.pixelSize: 30
+        font {
+            bold: true
+            pixelSize: control.width *0.15
+        }
+        color: "white"
         anchors.centerIn: parent
     }
 
@@ -31,8 +34,7 @@ Dial {
         x: control.background.x + control.background.width / 2 - width / 2
         y: control.background.y + control.background.height / 2 - height / 2
 
-        width: 10
-        height: 20
+        width: 10; height: 25
 
         color: "red"
         radius: 5
