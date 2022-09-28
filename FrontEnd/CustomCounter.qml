@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 
 Dial {
     id: control
-    width: parent.width *0.25; height: width
+    width: parent.width *0.26; height: width
     property string dialText: "0"
 
     background: Image {
@@ -34,10 +34,10 @@ Dial {
         x: control.background.x + control.background.width / 2 - width / 2
         y: control.background.y + control.background.height / 2 - height / 2
 
-        width: 10; height: 25
+        width: control.width *0.05; height: width *3
 
         color: "red"
-        radius: 5
+        radius: width *0.5
         antialiasing: true
 
         transform: [

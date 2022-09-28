@@ -16,15 +16,18 @@ ApplicationWindow {
         width: root.width; height: root.height *0.6
         color: "transparent"
 
-        CustomBorder {
-            borderColor: "#b3b3b0"; borderThickness: 3; borderSpacing: 5
-            rounded: true
-        }
 
 
+
+        // decorative element
         Rectangle {
+            id: bridge
             height: rpmDial.height *0.75; width: topUI.width -(rpmDial.width *2)
-            color: "#3a3a39"
+            gradient: Gradient {
+                GradientStop {position: 0.0; color: "#4d4d4d"}
+                GradientStop {position: 1.0; color: "#3a3a39"}
+            }
+
             anchors {
                 verticalCenter: rpmDial.verticalCenter
                 horizontalCenter: topUI.horizontalCenter
@@ -41,7 +44,10 @@ ApplicationWindow {
         // display for communicating critical value read
         Rectangle {
             id: critDisplay
-            color: "#646464"
+            gradient: Gradient {
+                GradientStop {position: 0.0; color: "#646464"}
+                GradientStop {position: 1.0; color: "#4d4d4d"}
+            }
             width: rpmDial.width *0.6; height: width *0.6
             radius: 6
             anchors {
@@ -73,8 +79,8 @@ ApplicationWindow {
             anchors {
                 left: topUI.left
                 leftMargin: width *0.65
-                verticalCenter: topUI.verticalCenter
-                verticalCenterOffset: -(width *0.04)
+                top: topUI.top
+                topMargin: width*0.15
             }
 
             // listening to rpmRead(..)
@@ -96,8 +102,7 @@ ApplicationWindow {
             anchors {
                 right: topUI.right
                 rightMargin: width *0.65
-                verticalCenter: topUI.verticalCenter
-                verticalCenterOffset: -(width *0.04)
+                verticalCenter: rpmDial.verticalCenter
             }
 
             // listening to speedRead(..)
@@ -116,21 +121,22 @@ ApplicationWindow {
         Rectangle {
             id: limiter
             property int percentage: 0
-            color: "#646464"
+            gradient: Gradient {
+                GradientStop {position: 0.0; color: "#646464"}
+                GradientStop {position: 1.0; color: "#4d4d4d"}
+            }
             width: rpmDial.width *0.5; height: width
             radius: width *0.5
             anchors {
                 horizontalCenter: topUI.horizontalCenter
-                top: topUI.verticalCenter
-                topMargin: 16
+                top: bridge.bottom; topMargin: - width *0.5
             }
 
             // listening to limiterRead(..)
             Connections {
                 target: dataSource
-                onLimiterRead: {
-                    limiter.percentage = parseInt(sensorValue *100)
-                }
+                onLimiterRead: limiter.percentage = parseInt(sensorValue *100)
+
             }
 
             CustomBorder {
@@ -172,11 +178,18 @@ ApplicationWindow {
 
     // bottom-left section, displaying voltage-type sensor readings
     Rectangle {
-        id: voltageUI
-        anchors.top: topUI.bottom
+        id: voltageUI; z:-1
+        anchors {
+            bottom: root.bottom
+            top: topUI.bottom; topMargin: -(topUI.height -bridge.height)
+            left: root.left
+        }
         width: root.width *0.5
-        height: root.height *0.4
-        color: "transparent"
+        height: root.height -bridge.height
+        gradient: Gradient {
+            GradientStop {position: 0.0; color: "#4d4d4d"}
+            GradientStop {position: 1.0; color: "#3a3a39"}
+        }
 
         CustomBorder {
             borderColor: "#b3b3b0"
@@ -201,12 +214,19 @@ ApplicationWindow {
 
     // bottom-right section, displaying temperature-type sensor readings
     Rectangle {
-        id: thermalsUI
-        anchors.left: voltageUI.right
-        anchors.top: topUI.bottom
+        id: thermalsUI; z: -1
+        anchors {
+            bottom: root.bottom
+            top: topUI.bottom; topMargin: -(topUI.height -bridge.height)
+            left: voltageUI.right
+            right: root.right
+        }
         width: root.width *0.5
-        height: root.height *0.4
-        color: "transparent"
+        height: root.height -bridge.height
+        gradient: Gradient {
+            GradientStop {position: 0.0; color: "#4d4d4d"}
+            GradientStop {position: 1.0; color: "#3a3a39"}
+        }
 
         CustomBorder {
             borderColor: "#b3b3b0"
