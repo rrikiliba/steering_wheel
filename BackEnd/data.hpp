@@ -28,7 +28,7 @@ public:
   Data(QObject *parent = nullptr) : QObject(parent) {
     // get a QTimer object to set off every second and start it immediatly
     _clock = new QTimer();
-    _clock->setInterval(500);
+    _clock->setInterval(1000);
     _clock->start();
     // bind the signal of timeout from the timer to the generateData() function
     connect(_clock, &QTimer::timeout, this, &Data::generateData);
@@ -51,9 +51,9 @@ private slots:
       case BMS_LV_TEMP: emit dataReceived(sensor, QRandomGenerator::global()->bounded(70.0f)); return;
       case INVERTER_TEMP: emit dataReceived(sensor, QRandomGenerator::global()->bounded(90.0f)); return;
       case MOTOR_TEMP: emit dataReceived(sensor, QRandomGenerator::global()->bounded(110.0f)); return;
-      case BMS_HV_VOLTAGE: emit dataReceived(sensor, 350.0f + QRandomGenerator::global()->bounded(110.0f)); return;
-      case BMS_LV_VOLTAGE: emit dataReceived(sensor, 12.0f + QRandomGenerator::global()->bounded(6.0f)); return;
-      case BMS_LV_CURRENT: emit dataReceived(sensor, QRandomGenerator::global()->bounded(30.0f)); return;
+      case BMS_HV_VOLTAGE: emit dataReceived(sensor, 350.0f + QRandomGenerator::global()->bounded(130.0f)); return;
+      case BMS_LV_VOLTAGE: emit dataReceived(sensor, 12.0f + QRandomGenerator::global()->bounded(8.0f)); return;
+      case BMS_LV_CURRENT: emit dataReceived(sensor, QRandomGenerator::global()->bounded(40.0f)); return;
       default: return;
     }
   };

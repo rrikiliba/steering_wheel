@@ -56,7 +56,7 @@ public slots:
         case Data::BMS_HV_VOLTAGE:
             lBound=350;
             uBound=460;
-            emit bmshvTempRead(data);
+            emit bmshvVoltageRead(data);
             break;
         case Data::BMS_LV_VOLTAGE:
             lBound=12;
@@ -81,7 +81,7 @@ public slots:
 
 signals:
     void valueChanged(float sensorValue);
-    void valueCritical(int sendorID);
+    void valueCritical(int sensorID);
 
     void rpmRead(float sensorValue);
     void speedRead(float sensorValue);

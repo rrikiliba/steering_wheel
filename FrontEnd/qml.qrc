@@ -4,6 +4,9 @@
         <file>CustomBorder.qml</file>
         <file>CustomCounter.qml</file>
         <file>CustomEntry.qml</file>
+        <file>CustomSign.qml</file>
         <file>Files/dial.png</file>
+        <file>Files/alertVoltage.png</file>
+        <file>Files/alertTemperature.png</file>
     </qresource>
 </RCC>

@@ -18,7 +18,6 @@ ApplicationWindow {
 
 
 
-
         // decorative element
         Rectangle {
             id: bridge
@@ -41,37 +40,6 @@ ApplicationWindow {
 
 
 
-        // display for communicating critical value read
-        Rectangle {
-            id: critDisplay
-            gradient: Gradient {
-                GradientStop {position: 0.0; color: "#646464"}
-                GradientStop {position: 1.0; color: "#4d4d4d"}
-            }
-            width: rpmDial.width *0.6; height: width *0.6
-            radius: 6
-            anchors {
-                horizontalCenter: topUI.horizontalCenter
-                verticalCenter: rpmDial.verticalCenter
-                verticalCenterOffset: -(width *0.6)
-            }
-
-            CustomBorder {
-                borderColor: "#b3b3b0"
-                borderThickness: parent.width *0.03
-                rounded: true
-
-                // listening to valueCritical(..)
-                Connections {
-                    target: dataSource
-
-                }
-            }
-
-        }
-
-
-
         // dial for RPM
         CustomCounter {
             id: rpmDial
@@ -80,16 +48,13 @@ ApplicationWindow {
                 left: topUI.left
                 leftMargin: width *0.65
                 top: topUI.top
-                topMargin: width*0.15
+                topMargin: width *0.12
             }
 
             // listening to rpmRead(..)
             Connections {
                 target: dataSource;
-                onRpmRead: {
-                    rpmDial.value = sensorValue;
-                    rpmDial.dialText = Math.round(sensorValue * 100) / 100;
-                }
+                onRpmRead: rpmDial.value = sensorValue
             }
         }
 
@@ -108,10 +73,7 @@ ApplicationWindow {
             // listening to speedRead(..)
             Connections {
                 target: dataSource;
-                onSpeedRead: {
-                    speedDial.value = sensorValue;
-                    speedDial.dialText = Math.round(sensorValue * 100) / 100;
-                }
+                onSpeedRead: speedDial.value = sensorValue
             }
         }
 
@@ -161,6 +123,103 @@ ApplicationWindow {
                 text: limiter.percentage+"%"
             }
         }
+
+
+
+        // display for critical value read
+        Rectangle {
+            id: critDisplay
+            gradient: Gradient {
+                GradientStop {position: 0.0; color: "#646464"}
+                GradientStop {position: 1.0; color: "#4d4d4d"}
+            }
+            width: rpmDial.width *0.6; height: width *0.6
+            radius: 6
+            anchors {
+                horizontalCenter: topUI.horizontalCenter
+                verticalCenter: rpmDial.verticalCenter
+                verticalCenterOffset: -(width *0.6)
+            }
+
+            CustomBorder {
+                borderColor: "#b3b3b0"
+                borderThickness: parent.width *0.03
+                rounded: true
+            }
+
+            CustomSign {
+                id: alertVoltage
+                source: "Files/alertVoltage.png"
+                anchors {
+                    verticalCenter: critDisplay.verticalCenter
+                    left: critDisplay.left; leftMargin: critDisplay.width *0.1
+                }
+            }
+
+            CustomSign {
+                id: alertTemperature
+                source: "Files/alertTemperature.png"
+                anchors {
+                    verticalCenter: critDisplay.verticalCenter
+                    right: critDisplay.right; rightMargin: critDisplay.width *0.1
+                }
+            }
+
+            // listening to valueCritical(..)
+            Connections {
+                target: dataSource
+                onValueCritical: {
+
+                    switch(sensorID){
+                    // sensors from 0 to 2 do not generate critical data
+                    case 3:
+                        bmshvTemperatureEntry.entryColor = "red"
+                        bmshvTemperatureEntry.entryColor = "white"
+                        alertTemperature.show = true
+                        alertTemperature.show = false
+                        break;
+                    case 4:
+                        bmslvTemperatureEntry.entryColor = "red"
+                        bmslvTemperatureEntry.entryColor = "white"
+                        alertTemperature.show = true
+                        alertTemperature.show = false
+                        break;
+                    case 5:
+                        inverterTemperatureEntry.entryColor = "red"
+                        inverterTemperatureEntry.entryColor = "white"
+                        alertTemperature.show = true
+                        alertTemperature.show = false
+                        break;
+                    case 6:
+                        motorTemperatureEntry.entryColor = "red"
+                        motorTemperatureEntry.entryColor = "white"
+                        alertTemperature.show = true
+                        alertTemperature.show = false
+                        break;
+                    case 7:
+                        bmshvVoltageEntry.entryColor = "red"
+                        bmshvVoltageEntry.entryColor = "white"
+                        alertVoltage.show = true
+                        alertVoltage.show = false
+                        break;
+                    case 8:
+                        bmslvVoltageEntry.entryColor = "red"
+                        bmslvVoltageEntry.entryColor = "white"
+                        alertVoltage.show = true
+                        alertVoltage.show = false
+                        break;
+                    case 9:
+                        bmslvCurrentEntry.entryColor = "red"
+                        bmslvCurrentEntry.entryColor = "white"
+                        alertVoltage.show = true
+                        alertVoltage.show = false
+                        break;
+                    default:
+                    }
+                }
+            }
+       }
+
    }
 
 
@@ -196,6 +255,47 @@ ApplicationWindow {
             borderThickness: 3
             borderSpacing: 5
             rounded: true
+        }
+
+        Column {
+            spacing: voltageUI.width *0.02
+            width: voltageUI.width; height: root.height *0.4
+            anchors {
+                horizontalCenter: voltageUI.horizontalCenter
+                verticalCenter: voltageUI.verticalCenter
+                verticalCenterOffset: rpmDial.height *0.2
+            }
+
+            CustomEntry {
+                id: bmshvVoltageEntry; entryName: "BMSHV"; entryUnit: "V"
+                from: 350; to: 460
+
+                Connections {
+                    target: dataSource
+                    onBmshvVoltageRead: bmshvVoltageEntry.value = sensorValue
+                }
+            }
+
+            CustomEntry {
+                id: bmslvVoltageEntry; entryName: "BMSLV"; entryUnit: "V"
+                from: 12; to: 18
+
+                Connections {
+                    target: dataSource
+                    onBmslvVoltageRead: bmslvVoltageEntry.value = sensorValue
+                }
+            }
+
+            CustomEntry {
+                id: bmslvCurrentEntry; entryName: "BMSLV"; entryUnit: "A"
+                from: 0; to: 30
+
+                Connections {
+                    target: dataSource
+                    onBmslvCurrentRead: bmslvCurrentEntry.value = sensorValue
+                }
+            }
+
         }
     }
 
@@ -233,6 +333,56 @@ ApplicationWindow {
             borderThickness: 3
             borderSpacing: 5
             rounded: true
+        }
+
+        Column {
+            spacing: thermalsUI.width *0.02
+            width: thermalsUI.width; height: root.height *0.4
+            anchors {
+                horizontalCenter: thermalsUI.horizontalCenter
+                verticalCenter: thermalsUI.verticalCenter
+                verticalCenterOffset: rpmDial.height *0.2
+            }
+
+            CustomEntry {
+                id: bmshvTemperatureEntry; entryName: "BMSHV"; entryUnit: "°C"
+                from: 20; to: 40
+
+                Connections {
+                    target: dataSource
+                    onBmshvTempRead: bmshvTemperatureEntry.value = sensorValue
+                }
+            }
+
+            CustomEntry {
+                id: bmslvTemperatureEntry; entryName: "BMSLV"; entryUnit: "°C"
+                from: 20; to: 50
+
+                Connections {
+                    target: dataSource
+                    onBmslvTempRead: bmslvTemperatureEntry.value = sensorValue
+                }
+            }
+
+            CustomEntry {
+                id: inverterTemperatureEntry; entryName: "INVRT"; entryUnit: "°C"
+                from: 20; to: 70
+
+                Connections {
+                    target: dataSource
+                    onInverterTempRead: inverterTemperatureEntry.value = sensorValue
+                }
+            }
+
+            CustomEntry {
+                id: motorTemperatureEntry; entryName: "MOTOR"; entryUnit: "°C"
+                from: 20; to: 80
+
+                Connections {
+                    target: dataSource
+                    onMototrTempRead: motorTemperatureEntry.value = sensorValue
+                }
+            }
         }
     }
 }

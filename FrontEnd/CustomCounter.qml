@@ -3,18 +3,20 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 
 Dial {
+    property string dialText: Math.round(value * 100) / 100
+
     id: control
     width: parent.width *0.26; height: width
-    property string dialText: "0"
 
     background: Image {
         source: "Files/dial.png"
 
-        x: control.width / 2 - width / 2
-        y: control.height / 2 - height / 2
+        x: (control.width -width) *0.5
+        y: (control.height -height) *0.5
 
         sourceSize.width: control.width
         sourceSize.height: control.height
+
         width: control.width
         height: control.width
     }

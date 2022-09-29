@@ -1,6 +1,21 @@
 # Recruiting steering wheel
 project by: Riccardo Libanora
-https://github.com/rrikiliba
+(https://github.com/rrikiliba)
+
+## Version 0.6: actually usable?
+
+- UI revision
+  - Sligthly rearranged panels to better fit the windo
+  - Better color choice and decoration
+
+- Added entries for each sensor type
+  - Each entry includes ID, numeric data and a progress bar
+
+- Added feedback for critical data read
+  - Display on top dedicated to signaling type of critical data read
+  - Flashing UI elements for quick acknowledgement
+
+- Fairly needed code cleanup
 
 
 ## Version 0.2: Top UI
