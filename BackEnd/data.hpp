@@ -26,11 +26,9 @@ public:
   Q_ENUM(Sensor)
 
   Data(QObject *parent = nullptr) : QObject(parent) {
-    // get a QTimer object to set off every second and start it immediatly
     _clock = new QTimer();
     _clock->setInterval(1000);
     _clock->start();
-    // bind the signal of timeout from the timer to the generateData() function
     connect(_clock, &QTimer::timeout, this, &Data::generateData);
   }
 
@@ -40,10 +38,8 @@ public:
 
 private slots:
   void generateData() {
-    // generate a value between 0 and the _SENSOR_SIZE (number of sensors)
     Sensor sensor = static_cast<Sensor>(QRandomGenerator::global()->generate() % Sensor::_SENSOR_SIZE);
     switch (sensor) {
-      // based on the result, send signal from different sensor
       case RPM: emit dataReceived(sensor, QRandomGenerator::global()->bounded(15000.0f)); return;
       case SPEED: emit dataReceived(sensor, QRandomGenerator::global()->bounded(120.0f)); return;
       case POWER_LIMITER: emit dataReceived(sensor, QRandomGenerator::global()->bounded(5) * 0.2f); return;

@@ -16,6 +16,8 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter
     color: "transparent"
 
+
+
     Text {
 
         anchors {

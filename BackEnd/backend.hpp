@@ -5,74 +5,73 @@
 #include <QString>
 #include <qqml.h>
 #include "data.hpp"
-#include <iostream> //for debugging reasons
 
 class BackEnd : public QObject {
     Q_OBJECT
 public:
-    explicit BackEnd(QObject *parent = nullptr){
-          QObject::connect(new Data(parent), &Data::dataReceived, this, &BackEnd::ingestData);
+    explicit BackEnd(Data &dataSource){
+          QObject::connect(&dataSource, &Data::dataReceived, this, &BackEnd::ingestData);
     }
 
 public slots:
     void ingestData(Data::Sensor sensor, float data){
-        float lBound=0, uBound=0;
+        float from=0, to=0;
         switch(sensor){
         case Data::RPM:
-            lBound=0;
-            uBound=15000;
+            from=0;
+            to=15000;
             emit rpmRead(data);
             break;
         case Data::SPEED:
-            lBound=0;
-            uBound=200;
+            from=0;
+            to=200;
             emit speedRead(data);
             break;
         case Data::POWER_LIMITER:
-            lBound=0;
-            uBound=100;
+            from=0;
+            to=100;
             emit limiterRead(data);
             break;
         case Data::BMS_HV_TEMP:
-            lBound=20;
-            uBound=40;
+            from=20;
+            to=40;
             emit bmshvTempRead(data);
             break;
         case Data::BMS_LV_TEMP:
-            lBound=20;
-            uBound=50;
+            from=20;
+            to=50;
             emit bmslvTempRead(data);
             break;
         case Data::INVERTER_TEMP:
-            lBound=20;
-            uBound=70;
+            from=20;
+            to=70;
             emit inverterTempRead(data);
             break;
         case Data::MOTOR_TEMP:
-            lBound=20;
-            uBound=80;
+            from=20;
+            to=80;
             emit mototrTempRead(data);
             break;
         case Data::BMS_HV_VOLTAGE:
-            lBound=350;
-            uBound=460;
+            from=350;
+            to=460;
             emit bmshvVoltageRead(data);
             break;
         case Data::BMS_LV_VOLTAGE:
-            lBound=12;
-            uBound=18;
+            from=12;
+            to=18;
             emit bmslvVoltageRead(data);
             break;
         case Data::BMS_LV_CURRENT:
-            lBound=0;
-            uBound=30;
+            from=0;
+            to=30;
             emit bmslvCurrentRead(data);
             break;
         default: return;
         }
 
         emit valueChanged(data);
-        if(data<=lBound||data>=uBound){
+        if(data<=from||data>=to){
             emit valueCritical(static_cast<int>(sensor));
 
         }

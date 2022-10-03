@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QFontDatabase>
 #include <QQmlContext>
 #include "backend.hpp"
 
@@ -7,8 +8,9 @@ int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
   QQmlApplicationEngine engine;
 
-  BackEnd *backend = new BackEnd();
-  engine.rootContext()->setContextProperty("dataSource", backend);
+  Data *dataGen = new Data();
+  BackEnd *backEnd = new BackEnd(*dataGen);
+  engine.rootContext()->setContextProperty("dataSource", backEnd);
 
   const QUrl url(QStringLiteral("qrc:/main.qml"));
   QObject::connect(

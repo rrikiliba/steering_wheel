@@ -33,8 +33,8 @@ Dial {
 
     handle: Rectangle {
         id: handleItem
-        x: control.background.x + control.background.width / 2 - width / 2
-        y: control.background.y + control.background.height / 2 - height / 2
+        x: control.background.x + (control.background.width -width) *0.5
+        y: control.background.y + (control.background.height - height) *0.5
 
         width: control.width *0.05; height: width *3
 
@@ -44,12 +44,12 @@ Dial {
 
         transform: [
             Translate {
-                y: -Math.min(control.background.width, control.background.height) * 0.4 + handleItem.height / 2
+                y: -Math.min(control.background.width, control.background.height) * 0.4 + handleItem.height *0.5
             },
             Rotation {
                 angle: control.angle
-                origin.x: handleItem.width / 2
-                origin.y: handleItem.height / 2
+                origin.x: handleItem.width *0.5
+                origin.y: handleItem.height *0.5
             }
         ]
     }

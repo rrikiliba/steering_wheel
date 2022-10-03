@@ -9,7 +9,6 @@ ApplicationWindow {
     opacity: visibility == Window.Windowed ? 0.9 : 1
 
 
-
     // top section, displaying speed, RPM and limiter percentage
     Rectangle {
         id: topUI
@@ -18,30 +17,8 @@ ApplicationWindow {
 
 
 
-        // decorative element
-        Rectangle {
-            id: bridge
-            height: rpmDial.height *0.75; width: topUI.width -(rpmDial.width *2)
-            gradient: Gradient {
-                GradientStop {position: 0.0; color: "#4d4d4d"}
-                GradientStop {position: 1.0; color: "#3a3a39"}
-            }
-
-            anchors {
-                verticalCenter: rpmDial.verticalCenter
-                horizontalCenter: topUI.horizontalCenter
-            }
-
-            CustomBorder {
-                borderColor: "black"
-                borderThickness: 1
-            }
-        }
-
-
-
         // dial for RPM
-        CustomCounter {
+        Speedometer {
             id: rpmDial
             from: 0; to: 15000
             anchors {
@@ -61,7 +38,7 @@ ApplicationWindow {
 
 
         // dial for speed
-        CustomCounter {
+        Speedometer {
             id: speedDial
             from: 0; to: 120
             anchors {
@@ -74,6 +51,28 @@ ApplicationWindow {
             Connections {
                 target: dataSource;
                 onSpeedRead: speedDial.value = sensorValue
+            }
+        }
+
+
+
+        // decorative element, don't mind me
+        Rectangle {
+            id: bridge; z: -1
+            height: rpmDial.height *0.75; width: topUI.width -(rpmDial.width *2)
+            gradient: Gradient {
+                GradientStop {position: 0.0; color: "#4d4d4d"}
+                GradientStop {position: 1.0; color: "#3a3a39"}
+            }
+
+            anchors {
+                verticalCenter: rpmDial.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+            }
+
+            CustomBorder {
+                borderColor: "black"
+                borderThickness: 1
             }
         }
 
@@ -147,18 +146,16 @@ ApplicationWindow {
                 rounded: true
             }
 
-            CustomSign {
-                id: alertVoltage
-                source: "Files/alertVoltage.png"
+            WarningSign {
+                id: alertVoltage; source: "Files/alertVoltage.png"
                 anchors {
                     verticalCenter: critDisplay.verticalCenter
                     left: critDisplay.left; leftMargin: critDisplay.width *0.1
                 }
             }
 
-            CustomSign {
-                id: alertTemperature
-                source: "Files/alertTemperature.png"
+            WarningSign {
+                id: alertTemperature; source: "Files/alertTemperature.png"
                 anchors {
                     verticalCenter: critDisplay.verticalCenter
                     right: critDisplay.right; rightMargin: critDisplay.width *0.1
@@ -171,12 +168,13 @@ ApplicationWindow {
                 onValueCritical: {
 
                     switch(sensorID){
-                    // sensors from 0 to 2 do not generate critical data
+                    // sensors from 0 to 2 do not currently generate critical data
                     case 3:
                         bmshvTemperatureEntry.entryColor = "red"
                         bmshvTemperatureEntry.entryColor = "white"
                         alertTemperature.show = true
                         alertTemperature.show = false
+                        // have to set parameters to one value and immediately the other to play the animation
                         break;
                     case 4:
                         bmslvTemperatureEntry.entryColor = "red"
@@ -257,6 +255,7 @@ ApplicationWindow {
             rounded: true
         }
 
+        // column for various entries
         Column {
             spacing: voltageUI.width *0.02
             width: voltageUI.width; height: root.height *0.4
@@ -266,7 +265,7 @@ ApplicationWindow {
                 verticalCenterOffset: rpmDial.height *0.2
             }
 
-            CustomEntry {
+            SensorEntry {
                 id: bmshvVoltageEntry; entryName: "BMSHV"; entryUnit: "V"
                 from: 350; to: 460
 
@@ -276,7 +275,7 @@ ApplicationWindow {
                 }
             }
 
-            CustomEntry {
+            SensorEntry {
                 id: bmslvVoltageEntry; entryName: "BMSLV"; entryUnit: "V"
                 from: 12; to: 18
 
@@ -286,7 +285,7 @@ ApplicationWindow {
                 }
             }
 
-            CustomEntry {
+            SensorEntry {
                 id: bmslvCurrentEntry; entryName: "BMSLV"; entryUnit: "A"
                 from: 0; to: 30
 
@@ -335,6 +334,7 @@ ApplicationWindow {
             rounded: true
         }
 
+        // column for various entries
         Column {
             spacing: thermalsUI.width *0.02
             width: thermalsUI.width; height: root.height *0.4
@@ -344,7 +344,7 @@ ApplicationWindow {
                 verticalCenterOffset: rpmDial.height *0.2
             }
 
-            CustomEntry {
+            SensorEntry {
                 id: bmshvTemperatureEntry; entryName: "BMSHV"; entryUnit: "°C"
                 from: 20; to: 40
 
@@ -354,7 +354,7 @@ ApplicationWindow {
                 }
             }
 
-            CustomEntry {
+            SensorEntry {
                 id: bmslvTemperatureEntry; entryName: "BMSLV"; entryUnit: "°C"
                 from: 20; to: 50
 
@@ -364,7 +364,7 @@ ApplicationWindow {
                 }
             }
 
-            CustomEntry {
+            SensorEntry {
                 id: inverterTemperatureEntry; entryName: "INVRT"; entryUnit: "°C"
                 from: 20; to: 70
 
@@ -374,7 +374,7 @@ ApplicationWindow {
                 }
             }
 
-            CustomEntry {
+            SensorEntry {
                 id: motorTemperatureEntry; entryName: "MOTOR"; entryUnit: "°C"
                 from: 20; to: 80
 
