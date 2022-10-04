@@ -1,6 +1,5 @@
 # Recruiting steering wheel
-project by: Riccardo Libanora
-(https://github.com/rrikiliba)
+project by: [Riccardo Libanora](https://github.com/rrikiliba)
 
 ## Version 1.0: final release
 
@@ -21,6 +20,7 @@ project by: Riccardo Libanora
   - The purpose behind this is that every QML component will receive its own signal, rather than listening to a generic signal and then having to determine whether it was meant for it
   - The point above is not applied to the signal valueCritical(.), as it won't be active as often and will be managed and sorted by the critical display in the front end
 
+![image](https://user-images.githubusercontent.com/113705896/193797342-fe2f5279-7f68-4312-9643-3759b37420d2.png)
 
 ## Version 0.6: actually usable?
 
